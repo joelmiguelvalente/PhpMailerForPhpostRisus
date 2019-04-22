@@ -17,7 +17,7 @@ class tsEmail {
 	var $setup_host = 'TU HOST DE CORREO SMTP';
 	var $setup_address = 'TU CORREO';
 	var $setup_password = 'TU CONTRASENA';
-    var $setup_port = 'TU PUERTO SMTP';
+        var $setup_port = 'TU PUERTO SMTP';
 	var $setup_sourcefolder = TS_EXTRA . 'PHPMailer/src/';
 	
 	/*
@@ -49,7 +49,9 @@ class tsEmail {
 		require $this->setup_sourcefolder . 'SMTP.php';
 		$smail = new PHPMailer(true);
 		try {
-		    $smail->isSMTP();
+		    // https://github.com/PHPMailer/PHPMailer/issues/1209#issuecomment-338898794
+		    // $smail->isSMTP();
+		    $smail->SMTPDebug = 0; // Se lo cambias por un 2 y mostrará si hay error
 		    $smail->Host = $this->setup_host;
 		    $smail->SMTPAuth = true;
 		    $smail->SMTPOptions = array(
@@ -57,7 +59,7 @@ class tsEmail {
 		    );
 		    $smail->Username = $this->setup_address;
 		    $smail->Password = $this->setup_password;
-		    $smail->SMTPSecure = 'ssl';
+		    $smail->SMTPSecure = 'ssl'; // SSL para puerto 465 || TLS para puerto 587
 		    $smail->Port = $this->setup_port;
 		
 		    $smail->setFrom($this->setup_address, $tsCore->settings['titulo']);
