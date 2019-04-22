@@ -1,8 +1,7 @@
 <?php if (!defined('TS_HEADER')) exit('No puedes acceder a archivos del script.');
-/* Información sobre este archivo:
-   /!\ Si requiere más información acerca de este archivo, dirigase al enlace:
-   ---> https://twitter.com/itsrascii
-   ---> Gracias por usar esta modificacion =)
+/* 
+   Creado por: itsrascii (Phpost: https://www.phpost.net/foro/perfil/8214-1tsr4sc11/)
+   Reconfigurado por: Migue92 (Phpost: https://www.phpost.net/foro/perfil/521013-miguel92/)
 */
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -69,7 +68,8 @@ class tsEmail {
 		    $smail->Subject = $this->emailSubject;
 		    $smail->Body    = $this->emailBody;
 		    $smail->AltBody = strip_tags($this->emailBody);
-		
+		    /* $smail->send(); = Para  PHP > 5.4 a PHP < 7.1 */
+		    /* $smail->isSendmail(); = Para  PHP < 7.3 */
 		    $smail->send();
 		    return true;
 		} catch (Exception $e) {
