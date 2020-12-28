@@ -16,8 +16,8 @@ class tsEmail {
 	var $setup_host = 'TU HOST DE CORREO SMTP';
 	var $setup_address = 'TU CORREO';
 	var $setup_password = 'TU CONTRASENA';
-        var $setup_port = 'TU PUERTO SMTP';
-	var $setup_sourcefolder = TS_EXTRA . 'PHPMailer/src/';
+   var $setup_port = 'TU PUERTO SMTP';
+	var $setup_folder = TS_EXTRA . 'PHPMailer/src/';
 	
 	/*
 		$tsEmailRef : tipo de email
@@ -43,35 +43,40 @@ class tsEmail {
 	*/
 	function sendEmail(){
 		global $tsCore;
-		require $this->setup_sourcefolder . 'Exception.php';
-		require $this->setup_sourcefolder . 'PHPMailer.php';
-		require $this->setup_sourcefolder . 'SMTP.php';
+		require $this->setup_folder . 'Exception.php';
+		require $this->setup_folder . 'PHPMailer.php';
+		require $this->setup_folder . 'SMTP.php';
 		$smail = new PHPMailer(true);
 		try {
-		    // https://github.com/PHPMailer/PHPMailer/issues/1209#issuecomment-338898794
-		    // $smail->isSMTP();
-		    $smail->SMTPDebug = 0; // Se lo cambias por un 2 y mostrará si hay error
-		    $smail->Host = $this->setup_host;
-		    $smail->SMTPAuth = true;
-		    $smail->SMTPOptions = array(
-		    'ssl' => array('verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true)
-		    );
-		    $smail->Username = $this->setup_address;
-		    $smail->Password = $this->setup_password;
-		    $smail->SMTPSecure = 'ssl'; // SSL para puerto 465 || TLS para puerto 587
-		    $smail->Port = $this->setup_port;
+		   // https://github.com/PHPMailer/PHPMailer/issues/1209#issuecomment-338898794
+		   $smail->isSMTP();
+		   $smail->Host = $this->setup_host;
+		   $smail->SMTPAuth = true;
+		   $smail->SMTPOptions = array(
+		   	'ssl' => array(
+		   		'verify_peer' => false, 
+		   		'verify_peer_name' => false, 
+		   		'allow_self_signed' => true
+		   	)
+		   );
+		   $smail->Username = $this->setup_address;
+		   $smail->Password = $this->setup_password;
+		   $smail->SMTPSecure = 'ssl';
+		   $smail->Port = $this->setup_port;
+		   // https://stackoverflow.com/questions/2491475/phpmailer-character-encoding-issues
+		   $smail->CharSet = 'UTF-8';
 		
-		    $smail->setFrom($this->setup_address, $tsCore->settings['titulo']);
-		    $smail->addAddress($this->emailTo);
+		   $smail->setFrom($this->setup_address, html_entity_decode($tsCore->settings['titulo']));
+		   $smail->addAddress($this->emailTo);
 		
-		    $smail->isHTML(true);
-		    $smail->Subject = $this->emailSubject;
-		    $smail->Body    = $this->emailBody;
-		    $smail->AltBody = strip_tags($this->emailBody);
-		    /* $smail->send(); = Para  PHP > 5.4 a PHP < 7.1 */
-		    /* $smail->isSendmail(); = Para  PHP < 7.3 */
-		    $smail->send();
-		    return true;
+		   $smail->isHTML(true);
+		   $smail->Subject = $this->emailSubject;
+		   $smail->Body    = $this->emailBody;
+		   $smail->AltBody = strip_tags($this->emailBody);
+		   /* $smail->send(); = Para  PHP > 5.4 a PHP < 7.1 */
+		   /* $smail->isSendmail(); = Para  PHP < 7.3 */
+		   $smail->send();
+		   return true;
 		} catch (Exception $e) {
 		    return false;
 		}
