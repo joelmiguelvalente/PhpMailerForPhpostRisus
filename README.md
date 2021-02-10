@@ -27,6 +27,5 @@ Este complemento te ayudará a que puedas tener un servidor SMTP para poder real
 _Asegurate de que los datos sean para un servidor SMTP SSL._
  * A disfrutar!
 
-# Topic original
-[Enviar E-mails por Servidor SMTP con PHPMailer](https://www.phpost.net/foro/topic/32094-mod-enviar-e-mails-por-servidor-smtp-con-phpmailer/)
-Por **1TSR4SC11**
+## Proximamente nueva actualización
+ * Esta actualización lo que traera es la administración del servidor PHPMailer sin tocar los archivos.
